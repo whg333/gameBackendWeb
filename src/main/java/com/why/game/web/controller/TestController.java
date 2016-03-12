@@ -1,6 +1,7 @@
 package com.why.game.web.controller;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,11 +12,14 @@ import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.why.game.http.HttpServiceCaller;
+import com.why.game.response.ResponseProtocolBuffer.TestProto;
 import com.why.game.service.LandService;
 import com.why.game.service.UserService;
 
@@ -58,7 +62,6 @@ public class TestController {
 	//@ModelAttribute 
 	@ResponseBody
 	public Map<String, Object> test2(/*HttpServletResponse response, */@RequestParam String userName, @RequestParam String userId){
-		//System.out.println("userName="+userName);
 		Map<String, Object> result = new HashMap<String, Object>();
 		result.put("status", 2);
 		result.put("id", userId);
@@ -70,22 +73,50 @@ public class TestController {
 	@RequestMapping(value="/getUserInfo")
 	@ResponseBody
 	public Map<String, Object> getUserInfo(@RequestParam String requestInfoStr){
-		//System.out.println("id="+id);
 		return userService.getUserInfo(requestInfoStr);
 	}
 	
 	@RequestMapping(value="/rename")
 	@ResponseBody
 	public Map<String, Object> rename(@RequestParam String userIdStr, @RequestParam String name){
-		//System.out.println("id="+id+", name="+name);
 		return userService.rename(userIdStr, name);
 	}
 	
 	@RequestMapping(value="/test3")
 	@ResponseBody
 	public Map<String, Object> test3(@RequestParam String userIdStr){
-		//System.out.println("id="+id);
 		return landService.test(userIdStr);
+	}
+	
+	@RequestMapping(value="/protobuf.proto")
+	@ResponseBody
+	public void protobuf(HttpServletResponse response, @RequestParam String userIdStr) throws IOException{
+		System.out.println("userIdStr="+userIdStr);
+		TestProto testProto = HttpServiceCaller.newTestProto("testProtobuf_whg333444测试");
+		
+		String s = new String(testProto.toByteArray());
+		System.out.println(s);
+		System.out.println(testProto);
+		HttpServiceCaller.printProtoStr(s);
+		
+		OutputStream out = response.getOutputStream();
+		//response.setContentType("application/octet-stream");
+		out.write(testProto.toByteArray());
+		out.close();
+	}
+	
+	@RequestMapping(value="/protobuf2.proto")
+	@ResponseBody
+	public ResponseEntity<TestProto> protobuf2(@RequestParam String userIdStr){
+		System.out.println("userIdStr="+userIdStr);
+		TestProto testProto = HttpServiceCaller.newTestProto("testProtobuf2_qwer一下");
+		
+		String s = new String(testProto.toByteArray());
+		System.out.println(s);
+		System.out.println(testProto);
+		HttpServiceCaller.printProtoStr(s);
+		
+		return ResponseEntity.ok(testProto);
 	}
 	
 }

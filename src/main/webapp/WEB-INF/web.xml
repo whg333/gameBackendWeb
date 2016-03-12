@@ -35,13 +35,13 @@
 		</init-param>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	<!--
-		<servlet-mapping> <servlet-name>spring-web</servlet-name>
-		<url-pattern>*.form</url-pattern> </servlet-mapping>
-	-->
 	<servlet-mapping>
 		<servlet-name>spring-web</servlet-name>
 		<url-pattern>*.ht</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>spring-web</servlet-name>
+		<url-pattern>*.proto</url-pattern>
 	</servlet-mapping>
 
 
