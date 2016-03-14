@@ -9,21 +9,31 @@
 	xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xsi:schemaLocation="
-			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
-            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
-	        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
-	        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
-	        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-	        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
-	        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd"
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+	        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd
+	        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
+	        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
 	        >
 	        
 	<context:component-scan base-package="com.why.game.*"/>
 	
+	<mvc:interceptors>
+		<bean class="com.why.game.web.interceptor.ControllerInterceptor" />
+	</mvc:interceptors>
+	<mvc:annotation-driven>  
+	    <mvc:message-converters>  
+	    	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	        <bean class="org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter"/>  
+	    </mvc:message-converters>  
+	</mvc:annotation-driven>
+	
+	<!-- 修改为上面mvc:的方式
 	<bean id="controllerInterceptor" class="com.why.game.web.interceptor.ControllerInterceptor"/>  
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="interceptors">  
-           <!-- 多个拦截器,顺序执行 -->  
            <list>  
               <ref bean="controllerInterceptor"/>  
            </list>  
@@ -33,18 +43,19 @@
 	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
 		<property name="messageConverters">     
 	         <util:list>     
-	             <ref bean="mappingJacksonHttpMessageConverter"/>   
-	             <ref bean="mappingProtobufHttpMessageConverter"/>  
+	             <ref bean="mappingJacksonHttpMessageConverter"/>
+	             <ref bean="mappingProtobufHttpMessageConverter"/>
 	         </util:list>     
     	</property>   
 	</bean>
 	
+	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+	<bean id="mappingProtobufHttpMessageConverter" class="org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter"/>
+	-->
+	
 	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
 	    <!--<property name="maxUploadSize" value="10485760"></property>-->  
 	</bean>  
-	
-	<bean id="mappingJacksonHttpMessageConverter" class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
-	<bean id="mappingProtobufHttpMessageConverter" class="org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter"/>
 	
 	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         	<property name="viewClass">
@@ -65,7 +76,8 @@
 	    </property>
 	</bean>
 	
-	<bean id="exceptionHandler" class="com.why.game.util.exception.ExceptionHandler"></bean>
+	<!-- 必须配置在此处方可拦截到Service，配置在applicationContext不行 -->
+	<bean id="exceptionHandler" class="com.why.game.util.exception.ExceptionHandler"/>
 	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
 		<property name="beanNames">
 			<list>

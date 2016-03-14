@@ -12,6 +12,7 @@ import org.codehaus.jackson.JsonEncoding;
 import org.codehaus.jackson.JsonGenerator;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -92,7 +93,7 @@ public class TestController {
 	@ResponseBody
 	public void protobuf(HttpServletResponse response, @RequestParam String userIdStr) throws IOException{
 		System.out.println("userIdStr="+userIdStr);
-		TestProto testProto = HttpServiceCaller.newTestProto("testProtobuf_whg333444测试");
+		TestProto testProto = HttpServiceCaller.newTestProto();
 		
 		String s = new String(testProto.toByteArray());
 		System.out.println(s);
@@ -109,7 +110,21 @@ public class TestController {
 	@ResponseBody
 	public ResponseEntity<TestProto> protobuf2(@RequestParam String userIdStr){
 		System.out.println("userIdStr="+userIdStr);
-		TestProto testProto = HttpServiceCaller.newTestProto("testProtobuf2_qwer一下");
+		TestProto testProto = HttpServiceCaller.newTestProto();
+		
+		String s = new String(testProto.toByteArray());
+		System.out.println(s);
+		System.out.println(testProto);
+		HttpServiceCaller.printProtoStr(s);
+		
+		return ResponseEntity.ok(testProto);
+	}
+	
+	@RequestMapping(value="/protobuf3.proto")
+	@ResponseBody
+	public ResponseEntity<TestProto> protobuf3(RequestEntity<TestProto> requestEntity){
+		TestProto testProto = requestEntity.getBody();
+		//TestProto testProto = HttpServiceCaller.newTestProto();
 		
 		String s = new String(testProto.toByteArray());
 		System.out.println(s);
