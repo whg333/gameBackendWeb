@@ -18,7 +18,8 @@
 	        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd"
 	        >
 	        
-	<context:component-scan base-package="com.why.game.*"/>
+	<!-- 配置只扫描web下面类文件，即controller和interceptors，只关注mvc的配置，整个应用的配置在applicationContext.xml -->
+	<context:component-scan base-package="com.why.game.web.*"/>
 	
 	<mvc:interceptors>
 		<bean class="com.why.game.web.interceptor.ControllerInterceptor" />
@@ -74,23 +75,6 @@
 	            -->
 	        </props>
 	    </property>
-	</bean>
-	
-	<!-- 必须配置在此处方可拦截到Service，配置在applicationContext不行 -->
-	<bean id="exceptionHandler" class="com.why.game.util.exception.ExceptionHandler"/>
-	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
-		<property name="beanNames">
-			<list>
-				<!-- 不配置*Service是因为形如XxxDomainService的也会被拦截  -->
-				<value>userService</value>
-				<value>landService</value>
-			</list>
-		</property>
-		<property name="interceptorNames">
-			<list>
-				<value>exceptionHandler</value>
-			</list>
-		</property>
 	</bean>
 	
 	<!-- 对静态资源文件的访问  方案一 （二选一）
