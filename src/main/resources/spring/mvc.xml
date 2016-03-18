@@ -31,7 +31,7 @@
 	    </mvc:message-converters>  
 	</mvc:annotation-driven>
 	
-	<!-- 修改为上面mvc:的方式
+	<!-- 修改为上面mvc:的方式，才能支持spring4中的protobuf协议自动转换
 	<bean id="controllerInterceptor" class="com.why.game.web.interceptor.ControllerInterceptor"/>  
 	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
 		<property name="interceptors">  

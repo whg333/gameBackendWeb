@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.why.game.http.HttpServiceCaller;
 import com.why.game.response.ResponseProtocolBuffer.TestProto;
 import com.why.game.service.LandService;
+import com.why.game.service.TestService;
 import com.why.game.service.UserService;
 
 
@@ -34,6 +35,9 @@ public class TestController {
 	
 	@Autowired
 	private LandService landService;
+	
+	@Autowired
+	private TestService testService;
 	
 	@RequestMapping(value="/test")
 	public void test(HttpServletRequest request, HttpServletResponse response) throws Exception{
@@ -87,6 +91,13 @@ public class TestController {
 	@ResponseBody
 	public Map<String, Object> test3(@RequestParam String userIdStr){
 		return landService.test(userIdStr);
+	}
+	
+	@RequestMapping(value="/test4")
+	@ResponseBody
+	public Map<String, Object> test4(@RequestParam String userIdStr){
+		testService.testMap();
+		return new HashMap<String, Object>();
 	}
 	
 	@RequestMapping(value="/protobuf.proto")

@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>huaTeng-backend-web</artifactId>
+	<artifactId>game-backend-web</artifactId>
 	<packaging>war</packaging>
 	<parent>
 		<groupId>com.why</groupId>
@@ -9,7 +9,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 	<build>
-		<finalName>huaTeng</finalName>
+		<finalName>game</finalName>
 		<pluginManagement>
 		<plugins>
 			<plugin>
@@ -142,7 +142,7 @@
 		
 		<dependency>
 			<groupId>com.why</groupId>
-			<artifactId>huaTeng-backend</artifactId>
+			<artifactId>game-backend</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
